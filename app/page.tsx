@@ -1,64 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import Synonyms from "./components/synonyms";
 
-// [
-// 	{
-// 		meta: {
-// 			id: "hello",
-// 			uuid: "7769f83c-93de-46ad-90a6-868da8669904",
-// 			src: "coll_thes",
-// 			section: "alpha",
-// 			target: { tuuid: "0cdef8d5-c9d1-431b-b397-2077a127c328", tsrc: "collegiate" },
-// 			stems: ["hello", "hellos"],
-// 			syns: [["greeting", "salutation", "salute", "welcome"]],
-// 			ants: [["adieu", "bon voyage", "cong\u00e9", "farewell", "Godspeed", "good-bye"]],
-// 			offensive: false,
-// 		},
-// 		hwi: { hw: "hello" },
-// 		fl: "noun",
-// 		def: [
-// 			{
-// 				sseq: [
-// 					[
-// 						[
-// 							"sense",
-// 							{
-// 								dt: [
-// 									["text", "an expression of goodwill upon meeting "],
-// 									["vis", [{ t: "we said our {it}hellos{/it} and got right down to business" }]],
-// 								],
-// 								syn_list: [
-// 									[{ wd: "greeting" }, { wd: "salutation" }, { wd: "salute" }, { wd: "welcome" }],
-// 								],
-// 								rel_list: [
-// 									[{ wd: "ave" }, { wd: "hail" }],
-// 									[{ wd: "amenities" }, { wd: "civilities" }, { wd: "pleasantries" }],
-// 									[{ wd: "regards" }, { wd: "respects" }, { wd: "wishes" }],
-// 								],
-// 								ant_list: [
-// 									[
-// 										{ wd: "adieu" },
-// 										{ wd: "bon voyage" },
-// 										{ wd: "cong\u00e9", wvrs: [{ wvl: "also", wva: "congee" }] },
-// 										{ wd: "farewell" },
-// 										{ wd: "Godspeed" },
-// 										{ wd: "good-bye", wvrs: [{ wvl: "or", wva: "good-by" }] },
-// 									],
-// 								],
-// 							},
-// 						],
-// 					],
-// 				],
-// 			},
-// 		],
-// 		shortdef: ["an expression of goodwill upon meeting"],
-// 	},
-// ];
 export default function Home() {
 	const [word, setWord] = useState("");
-	// const [data, setData] = useState<any>(null);
+	const [theme, setTheme] = useState("light");
 	const [synonyms, setSynonyms] = useState<any>(null);
 	const [antonyms, setAntonyms] = useState<any>(null);
 	const [definition, setDefinition] = useState<any>(null);
@@ -74,7 +21,7 @@ export default function Home() {
 				throw new Error("Network response was not ok");
 			}
 			const jsonData = await response.json();
-			// setData(jsonData);
+			console.log(jsonData);
 			console.log(jsonData);
 			if (jsonData[0].meta) {
 				setSynonyms(jsonData[0].meta.syns.flat());
@@ -83,21 +30,37 @@ export default function Home() {
 			} else {
 				setSpellingMistakes(jsonData);
 			}
-
-			// if data[0]
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
 	};
 	return (
-		<div className="flex justify-center">
+		<div className={`${theme} text-center`}>
 			<main>
-				hi
+				<div className="text-[5rem] flex justify-between">
+					<span className="text-black">Light Mode </span>
+					<span className="text-white">Dark Mode</span>
+				</div>
+				<div className="flex justify-between">
+					<button className="border text-black" onClick={(e) => setTheme("dark")}>
+						Turn off the light
+					</button>
+					<button className="border text-white" onClick={(e) => setTheme("light")}>
+						Turn on the light
+					</button>
+				</div>
 				<form onSubmit={handleSubmit}>
-					<input type="text" value={word} onChange={(e) => setWord(e.target.value)} />
-					<button type="submit">submit</button>
+					<input
+						type="text"
+						placeholder=" Show me... "
+						value={word}
+						onChange={(e) => setWord(e.target.value)}
+					/>
+					<button type="submit" className="border">
+						Search
+					</button>
 				</form>
-				<p>Synonyms</p>
+				<div>{theme === "light" ? <Synonyms synonymsList={synonyms} /> : <p>bye</p>}</div>
 				{synonyms}
 				<br></br>
 				<p>Antonyms</p>
