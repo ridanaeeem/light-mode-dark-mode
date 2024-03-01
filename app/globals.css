@@ -20,7 +20,10 @@
 
 .dark {
 	background-color: black;
-
 	color: white;
 	height: 100vh;
 }
+
+/* .dark input {
+	color: black;
+} */

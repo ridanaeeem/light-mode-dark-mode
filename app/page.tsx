@@ -4,7 +4,7 @@ import { useState } from "react";
 import Synonyms from "./components/synonyms";
 import Antonyms from "./components/antonyms";
 
-const thesaurusKey = process.env.THESAURUS_KEY;
+const thesaurusKey = process.env.NEXT_PUBLIC_THESAURUS_KEY;
 
 export default function Home() {
 	const [word, setWord] = useState("");
@@ -20,10 +20,16 @@ export default function Home() {
 			const response = await fetch(
 				`https://dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${thesaurusKey}`
 			);
+
+			console.log(response);
 			if (!response.ok) {
 				throw new Error("Network response was not ok");
+			} else {
+				console.log(response);
 			}
+
 			const jsonData = await response.json();
+
 			console.log(jsonData);
 			console.log(jsonData[0].meta.syns[0][1]);
 			if (jsonData[0].meta) {
@@ -63,9 +69,12 @@ export default function Home() {
 				<form onSubmit={handleSubmit}>
 					<input
 						type="text"
-						placeholder=" Show me... "
+						placeholder=" Thesaurus search... "
 						value={word}
-						onChange={(e) => setWord(e.target.value)}
+						onChange={(e) => {
+							setWord(e.target.value);
+							console.log(word);
+						}}
 						className="flex border p-[1rem] w-[50%] m-auto mt-[1rem] text-center"
 					/>
 					<button type="submit" className="border p-[1rem] w-[50%] m-auto mt-[1rem] text-center">
@@ -76,7 +85,7 @@ export default function Home() {
 				<div className="text-center">
 					{theme === "light" ? <Synonyms synonymLists={synonyms} /> : <Antonyms antonymLists={antonyms} />}
 				</div>
-				{spellingMistakes}
+				{/* {spellingMistakes} */}
 			</main>
 		</div>
 	);
