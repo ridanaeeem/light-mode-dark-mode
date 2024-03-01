@@ -13,9 +13,9 @@ export default function Synonyms({ synonymLists }: { synonymLists: string[] }) {
 	}
 	return (
 		<div>
-			<ul className="flex flex-row">
+			<ul className="flex flex-wrap justify-center">
 				{allSynonyms.map((synonym, index) => (
-					<li key={index} className="border">
+					<li key={index} className="text-3xl p-[2rem] text-gray-400">
 						{synonym}
 					</li>
 				))}

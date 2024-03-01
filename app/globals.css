@@ -6,11 +6,6 @@
 	font-family: "Times New Roman", Times, serif;
 }
 
-body {
-	color: black;
-	background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
-}
-
 @layer utilities {
 	.text-balance {
 		text-wrap: balance;
@@ -25,7 +20,7 @@ body {
 
 .dark {
 	background-color: black;
-  
+
 	color: white;
 	height: 100vh;
 }

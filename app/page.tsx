@@ -4,6 +4,8 @@ import { useState } from "react";
 import Synonyms from "./components/synonyms";
 import Antonyms from "./components/antonyms";
 
+const thesaurusKey = process.env.THESAURUS_KEY;
+
 export default function Home() {
 	const [word, setWord] = useState("");
 	const [theme, setTheme] = useState("light");
@@ -16,7 +18,7 @@ export default function Home() {
 		e.preventDefault();
 		try {
 			const response = await fetch(
-				`https://dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=46b21575-6153-47db-ac8a-4565cdf3aef4`
+				`https://dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${thesaurusKey}`
 			);
 			if (!response.ok) {
 				throw new Error("Network response was not ok");
@@ -70,12 +72,10 @@ export default function Home() {
 						Search
 					</button>
 				</form>
-				<div>{definition}</div>
-				<div>
+				<div className="text-[3rem] p-[1rem]">{definition}</div>
+				<div className="text-center">
 					{theme === "light" ? <Synonyms synonymLists={synonyms} /> : <Antonyms antonymLists={antonyms} />}
 				</div>
-				<br></br>
-				<br></br>
 				{spellingMistakes}
 			</main>
 		</div>

@@ -12,9 +12,9 @@ export default function Antonyms({ antonymLists }: { antonymLists: string[] }) {
 	}
 	return (
 		<div>
-			<ul className="flex flex-row">
+			<ul className="flex flex-wrap justify-center">
 				{allAntonyms.map((antonym, index) => (
-					<li key={index} className="border">
+					<li key={index} className="text-3xl p-[2rem] text-gray-400">
 						{antonym}
 					</li>
 				))}
