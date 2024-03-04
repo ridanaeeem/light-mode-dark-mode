@@ -35,7 +35,11 @@ export default function Home() {
 
 			if (jsonData[0].meta) {
 				if (jsonData[0].shortdef) {
-					setDefinition(jsonData[0].shortdef);
+					for (var i = 0; i < jsonData[0].shortdef.length; i++) {
+						if (i === 0) setDefinition(word + " - " + jsonData[0].shortdef);
+						else setDefinition(definition + "; " + jsonData[0].shortdef[i]);
+					}
+					setDefinition(word + ": " + jsonData[0].shortdef.join("; "));
 					setSpellingMistakes([]);
 				}
 
@@ -55,8 +59,8 @@ export default function Home() {
 		}
 	};
 	return (
-		<div className={`${theme} text-center p-[1rem]`}>
-			<main className="">
+		<div className={`${theme} text-center bg-black`}>
+			<main className={`p-[1rem] ${theme === "dark" ? "bg-black" : "bg-white"}`}>
 				<div className="text-[8rem] flex justify-between">
 					<span className="text-black">Light Mode</span>
 					<span className="text-white">Dark Mode</span>
