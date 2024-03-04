@@ -1,8 +1,9 @@
 "use client";
-
+// import { useContext, createContext } from "react";
 import { useState } from "react";
 import Synonyms from "./components/synonyms";
 import Antonyms from "./components/antonyms";
+import Suggested from "./components/suggested";
 
 const thesaurusKey = process.env.NEXT_PUBLIC_THESAURUS_KEY;
 
@@ -10,9 +11,9 @@ export default function Home() {
 	const [word, setWord] = useState("");
 	const [theme, setTheme] = useState("light");
 	const [synonyms, setSynonyms] = useState([""]);
-	const [antonyms, setAntonyms] = useState<any>(null);
-	const [definition, setDefinition] = useState<any>(null);
-	const [spellingMistakes, setSpellingMistakes] = useState<any>(null);
+	const [antonyms, setAntonyms] = useState([""]);
+	const [definition, setDefinition] = useState("");
+	const [spellingMistakes, setSpellingMistakes] = useState([]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -31,13 +32,23 @@ export default function Home() {
 			const jsonData = await response.json();
 
 			console.log(jsonData);
-			console.log(jsonData[0].meta.syns[0][1]);
+
 			if (jsonData[0].meta) {
-				setSynonyms(jsonData[0].meta.syns);
-				setAntonyms(jsonData[0].meta.ants);
-				setDefinition(jsonData[0].shortdef);
+				if (jsonData[0].shortdef) {
+					setDefinition(jsonData[0].shortdef);
+					setSpellingMistakes([]);
+				}
+
+				if (jsonData[0].meta.syns) setSynonyms(jsonData[0].meta.syns);
+				else setSynonyms(["No synonyms found"]);
+
+				if (jsonData[0].meta.ants) setAntonyms(jsonData[0].meta.ants);
+				else setAntonyms(["No antonyms found"]);
 			} else {
 				setSpellingMistakes(jsonData);
+				setSynonyms([]);
+				setAntonyms([]);
+				setDefinition("");
 			}
 		} catch (error) {
 			console.error("Error fetching data:", error);
@@ -85,7 +96,7 @@ export default function Home() {
 				<div className="text-center">
 					{theme === "light" ? <Synonyms synonymLists={synonyms} /> : <Antonyms antonymLists={antonyms} />}
 				</div>
-				{/* {spellingMistakes} */}
+				<Suggested spellingMistakes={spellingMistakes} setWord={setWord} />
 			</main>
 		</div>
 	);
